@@ -12,10 +12,12 @@
   (rem index 9))
 
 (defn get-row [puzzle index]
+  "Get all numbers of the row of index."
   (let [row-number (get-row-number index)]
     (subvec-length puzzle (* row-number 9) 9)))
 
 (defn get-col [puzzle index]
+  "Get all numbers of the column of index."
   (let [col-number (get-col-number index)]
     (take-nth 9 (drop col-number puzzle))))
 
@@ -23,6 +25,7 @@
   (* (quot number 3) 3))
 
 (defn get-block [puzzle index]
+  "Get all the numbers of the 3x3 block which the index is part of."
   (let [start-row (get-block-start (get-row-number index))
         start-col (get-block-start (get-col-number index))]
     (mapcat
@@ -30,6 +33,7 @@
       (range 3))))
 
 (defn find-first-empty [puzzle]
+  "Find the index of the first empty field (marked with 0)."
   (some
    (fn [index] (if (zero? (puzzle index)) index))
    (range (count puzzle))))
@@ -54,6 +58,7 @@
       (list puzzle))))
 
 
+; taken from http://en.wikipedia.org/wiki/Sudoku
 (def puzzle
   [5 3 0  0 7 0  0 0 0
    6 0 0  1 9 5  0 0 0
