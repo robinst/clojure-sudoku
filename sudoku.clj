@@ -2,9 +2,6 @@
   (doseq [line (partition 9 puzzle)]
     (println line)))
 
-(defn subvec-length [v start length]
-  (subvec v start (+ start length)))
-
 (defn get-row-number [index]
   (quot index 9))
 
@@ -14,7 +11,8 @@
 (defn get-row [puzzle index]
   "Get all numbers of the row of index."
   (let [row-number (get-row-number index)]
-    (subvec-length puzzle (* row-number 9) 9)))
+    (let [start (* row-number 9)]
+      (subvec puzzle start (+ start 9)))))
 
 (defn get-col [puzzle index]
   "Get all numbers of the column of index."
@@ -29,7 +27,9 @@
   (let [start-row (get-block-start (get-row-number index))
         start-col (get-block-start (get-col-number index))]
     (mapcat
-      (fn [row] (subvec-length puzzle (+ (* (+ start-row row) 9) start-col) 3))
+      (fn [row]
+        (let [start (+ (* (+ start-row row) 9) start-col)]
+          (subvec puzzle start (+ start 3))))
       (range 3))))
 
 (defn find-first-empty [puzzle]
